@@ -114,7 +114,10 @@ const lastmodMap = buildLastmodMap(noindexPaths);
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://anvilwiki.pages.dev',
+  // Vercel supplies SITE_URL for the production deployment. Keep the
+  // Cloudflare Pages address only as a safe local fallback, never the
+  // original template domain.
+  site: process.env.SITE_URL || 'https://loot-up-wiki.pages.dev',
   output: 'static',
   trailingSlash: 'never',
   image: {
