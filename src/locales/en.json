@@ -39,6 +39,7 @@
     "popular": { "badge": "Useful first", "title": "Browse these pages", "quickLinks": [
       { "label": "Loot Up Codes", "href": "/codes/loot-up-codes" },
       { "label": "Beginner Tips", "href": "/guides/loot-up-tips" },
+      { "label": "Enchant weapons: verified basics", "href": "/builds/best-enchantments" },
       { "label": "Best Stats: player advice", "href": "/builds/best-stats" },
       { "label": "Crystal world requirements", "href": "/guides/crystals-world-requirements" }
     ] },
