@@ -194,6 +194,13 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
     {gscVerification && <meta name="google-site-verification" content={gscVerification} />}
 
     {/*
+      AdSense account verification must be visible to Google's crawler before a
+      visitor accepts cookies.  This meta tag verifies ownership only; the
+      actual AdSense loader remains consent-gated below.
+    */}
+    {adsenseClient && <meta name="google-adsense-account" content={adsenseClient} />}
+
+    {/*
       Analytics / AdSense are injected DYNAMICALLY (consent-gated).
       BaseLayout only defines the loader; CookieConsent.astro calls it after
       the visitor accepts. See GDPR note in AGENTS.md. No tracking env vars
