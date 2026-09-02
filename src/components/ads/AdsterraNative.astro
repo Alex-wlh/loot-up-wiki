@@ -1,0 +1,19 @@
+---
+/**
+ * AdsterraNative — consent-gated Native Banner container.
+ *
+ * The network script is never committed: its source URL and matching
+ * container ID come from deployment environment variables. BaseLayout adds
+ * the script only after the visitor accepts the cookie banner.
+ */
+const scriptSrc = import.meta.env.PUBLIC_ADSTERRA_NATIVE_SCRIPT as string | undefined;
+const containerId = import.meta.env.PUBLIC_ADSTERRA_NATIVE_CONTAINER_ID as string | undefined;
+const show = !!(scriptSrc && containerId);
+---
+{show && (
+  <div
+    id={containerId}
+    data-adsterra-native
+    data-adsterra-src={scriptSrc}
+  ></div>
+)}

@@ -104,6 +104,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID as string | undefined;
 const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN as string | undefined;
 const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION as string | undefined;
 const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT as string | undefined;
+const adsterraNativeScript = import.meta.env.PUBLIC_ADSTERRA_NATIVE_SCRIPT as string | undefined;
 
 // Consent banner labels (locale JSON `shared.*`; hardcoded fallbacks for a
 // locale whose JSON hasn't been translated yet).
@@ -201,13 +202,13 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
     {adsenseClient && <meta name="google-adsense-account" content={adsenseClient} />}
 
     {/*
-      Analytics / AdSense are injected DYNAMICALLY (consent-gated).
+      Analytics / advertising scripts are injected DYNAMICALLY (consent-gated).
       BaseLayout only defines the loader; CookieConsent.astro calls it after
       the visitor accepts. See GDPR note in AGENTS.md. No tracking env vars
       → this block renders nothing → zero JS.
     */}
-    {(gaId || adsenseClient) && (
-      <script is:inline define:vars={{ gaId, adsenseClient }}>
+    {(gaId || adsenseClient || adsterraNativeScript) && (
+      <script is:inline define:vars={{ gaId, adsenseClient, adsterraNativeScript }}>
         window.__awLoadTrackers = () => {
           if (window.__awTrackersLoaded) return;
           window.__awTrackersLoaded = true;
@@ -231,6 +232,19 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
               'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
               adsenseClient;
             document.head.appendChild(s);
+          }
+          if (adsterraNativeScript) {
+            document.querySelectorAll('[data-adsterra-native]').forEach((container) => {
+              if (!(container instanceof HTMLElement) || container.dataset.adsterraLoaded === '1') return;
+              const src = container.dataset.adsterraSrc;
+              if (!src) return;
+              container.dataset.adsterraLoaded = '1';
+              const s = document.createElement('script');
+              s.async = true;
+              s.setAttribute('data-cfasync', 'false');
+              s.src = src;
+              container.before(s);
+            });
           }
         };
       </script>
@@ -296,7 +310,7 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
   <body class="min-h-screen bg-background text-foreground antialiased">
     <slot />
     {/* Consent banner — only rendered when tracking env vars are set. */}
-    {(gaId || adsenseClient) && (
+    {(gaId || adsenseClient || adsterraNativeScript) && (
       <CookieConsent
         labels={{
           title: consentLabels.title,
