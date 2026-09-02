@@ -2,9 +2,9 @@
 /**
  * InContentAd — a page-internal ad slot (e.g. between article sections).
  *
- * Prefers a Google AdSense responsive unit when its in-content slot is
- * configured. Otherwise it can render one consent-gated Adsterra Native
- * Banner. Empty variables leave the page unchanged.
+ * Uses the active Adsterra Native Banner first. A configured AdSense unit is
+ * the fallback while Adsterra is absent. Empty variables leave the page
+ * unchanged.
  *
  * Unlike StickyBanner, this is not sticky; it sits inline with content.
  */
@@ -22,8 +22,8 @@ const client = import.meta.env.PUBLIC_ADSENSE_CLIENT as string | undefined;
 const slot = import.meta.env.PUBLIC_ADSENSE_SLOT_INCONTENT as string | undefined;
 const adsterraScript = import.meta.env.PUBLIC_ADSTERRA_NATIVE_SCRIPT as string | undefined;
 const adsterraContainer = import.meta.env.PUBLIC_ADSTERRA_NATIVE_CONTAINER_ID as string | undefined;
-const showAdSense = !!(client && slot);
-const showAdsterra = !showAdSense && !!(adsterraScript && adsterraContainer);
+const showAdsterra = !!(adsterraScript && adsterraContainer);
+const showAdSense = !showAdsterra && !!(client && slot);
 const show = showAdSense || showAdsterra;
 const current = Astro.currentLocale;
 const sharedStrings =

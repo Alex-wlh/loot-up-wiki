@@ -103,8 +103,13 @@ const xDefaultHref = defaultAlt
 const gaId = import.meta.env.PUBLIC_GA_ID as string | undefined;
 const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN as string | undefined;
 const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION as string | undefined;
-const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT as string | undefined;
+const adsenseVerificationClient = import.meta.env.PUBLIC_ADSENSE_CLIENT as string | undefined;
 const adsterraNativeScript = import.meta.env.PUBLIC_ADSTERRA_NATIVE_SCRIPT as string | undefined;
+const adsterraNativeContainer = import.meta.env.PUBLIC_ADSTERRA_NATIVE_CONTAINER_ID as string | undefined;
+const adsterraNativeEnabled = !!(adsterraNativeScript && adsterraNativeContainer);
+// Keep AdSense ownership verification available, but do not load its runtime
+// while Adsterra is the selected ad provider.
+const adsenseClient = adsterraNativeEnabled ? undefined : adsenseVerificationClient;
 
 // Consent banner labels (locale JSON `shared.*`; hardcoded fallbacks for a
 // locale whose JSON hasn't been translated yet).
@@ -199,7 +204,7 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
       visitor accepts cookies.  This meta tag verifies ownership only; the
       actual AdSense loader remains consent-gated below.
     */}
-    {adsenseClient && <meta name="google-adsense-account" content={adsenseClient} />}
+    {adsenseVerificationClient && <meta name="google-adsense-account" content={adsenseVerificationClient} />}
 
     {/*
       Analytics / advertising scripts are injected DYNAMICALLY (consent-gated).
@@ -207,7 +212,7 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
       the visitor accepts. See GDPR note in AGENTS.md. No tracking env vars
       → this block renders nothing → zero JS.
     */}
-    {(gaId || adsenseClient || adsterraNativeScript) && (
+    {(gaId || adsenseClient || adsterraNativeEnabled) && (
       <script is:inline define:vars={{ gaId, adsenseClient, adsterraNativeScript }}>
         window.__awLoadTrackers = () => {
           if (window.__awTrackersLoaded) return;
@@ -310,7 +315,7 @@ const privacyLabel = footerStrings.privacyPolicy ?? 'Privacy Policy';
   <body class="min-h-screen bg-background text-foreground antialiased">
     <slot />
     {/* Consent banner — only rendered when tracking env vars are set. */}
-    {(gaId || adsenseClient || adsterraNativeScript) && (
+    {(gaId || adsenseClient || adsterraNativeEnabled) && (
       <CookieConsent
         labels={{
           title: consentLabels.title,
