@@ -32,7 +32,7 @@
     "updates": { "badge": "Source-led", "title": "Latest Guides" },
     "start": { "badge": "Start here", "title": "Your Loot Up starting points", "cards": [
       { "number": "01", "title": "Loot Up Basics", "description": "Learn the core loop: fight enemies, collect loot, upgrade gear, and enchant weapons.", "icon": "lucide:book-open", "href": "/guides/loot-up-roblox" },
-      { "number": "02", "title": "Reported Codes", "description": "See the latest two-source code snapshot and the exact redemption path.", "icon": "lucide:gift", "href": "/codes/loot-up-codes" },
+      { "number": "02", "title": "Active Code Check", "description": "See the September code report and the exact redemption path.", "icon": "lucide:gift", "href": "/codes/loot-up-codes" },
       { "number": "03", "title": "Build Advice", "description": "Read clearly labeled player suggestions for stats, skills, and enchantments.", "icon": "lucide:sliders-horizontal", "href": "/builds/best-stats" },
       { "number": "04", "title": "Gear Guides", "description": "Use verified system notes before choosing armor or weapons.", "icon": "lucide:shield", "href": "/gear/best-armor" }
     ] },
@@ -44,10 +44,10 @@
       { "label": "Crystal world requirements", "href": "/guides/crystals-world-requirements" }
     ] },
     "explore": { "title": "Explore Loot Up", "description": "Each section distinguishes verified game information from player recommendations.", "modules": [
-      { "order": 1, "name": "Loot Up Codes", "description": "A two-source code snapshot with a live-game verification reminder.", "href": "/codes/loot-up-codes", "displayType": "badge-list", "highlights": [
-        { "label": "SUMMER", "detail": "Reported by two code guides in the August 2026 source snapshot", "badge": "Check in game" },
-        { "label": "SKULLISLAND", "detail": "Reported by two code guides in the August 2026 source snapshot", "badge": "Check in game" },
-        { "label": "BATTLEPASS", "detail": "Reported by two code guides in the August 2026 source snapshot", "badge": "Check in game" }
+      { "order": 1, "name": "Loot Up Codes", "description": "A September source check with the live-game verification reminder.", "href": "/codes/loot-up-codes", "displayType": "badge-list", "highlights": [
+        { "label": "SKILLS", "detail": "Newly reported in current September code-guide updates", "badge": "Check in game" },
+        { "label": "SEASON2", "detail": "Reported active in the current source review", "badge": "Check in game" },
+        { "label": "DUNGEON20", "detail": "Reported active in the current source review", "badge": "Check in game" }
       ] },
       { "order": 2, "name": "Loot Up Beginner Guides", "description": "Core loop, early-world priorities, Parchment notes, and Crystal requirements.", "href": "/guides", "displayType": "steps", "highlights": [
         { "label": "1", "detail": "Finish the tutorial and learn the basic combat actions." },
