@@ -22,6 +22,7 @@ import LocaleLayout from '~/components/layout/LocaleLayout.astro';
 import VideoSection from '~/components/home/VideoSection.astro';
 import QuickStart from '~/components/home/QuickStart.astro';
 import ExploreModules from '~/components/home/ExploreModules.astro';
+import InContentAd from '~/components/ads/InContentAd.astro';
 import { site } from '~/config/site';
 import { NAVIGATION_CONFIG } from '~/config/navigation';
 import { type Locale } from '~/i18n/routing';
@@ -127,6 +128,13 @@ function trendingLabel(link: QuickLink): string {
     title={start.title}
     cards={start.cards}
   />
+
+  {/* Homepage Native placement: after useful starting links, before editorial lists. */}
+  <section class="border-t border-border bg-muted/20" aria-label="Advertisement">
+    <div class="mx-auto max-w-7xl px-4">
+      <InContentAd />
+    </div>
+  </section>
 
   {/* ───────────────────── Recent Updates + Trending ───────────────────── */}
   <section class="section border-t border-border">
