@@ -33,8 +33,49 @@ const sharedStrings =
 const { label = sharedStrings.adLabel ?? 'Advertisement' } = Astro.props;
 ---
 {show && (
-  <div class:list={['my-8 flex flex-col items-center justify-center', showAdSense ? 'min-h-[250px]' : 'min-h-[90px]']}>
+  <div
+    data-adsterra-slot={showAdsterra ? '' : undefined}
+    class:list={['my-8 flex flex-col items-center justify-center', showAdSense ? 'min-h-[250px]' : undefined]}
+  >
     <span class="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
     {showAdSense ? <AdSenseSlot position="incontent" /> : <AdsterraNative />}
   </div>
+)}
+
+{showAdsterra && (
+  <script is:inline>
+    (() => {
+      // Native inventory can be unavailable for a visitor. Keep the placement
+      // while Adsterra renders, then remove the label and reserved whitespace if
+      // no visible creative arrives (including when consent was not granted).
+      const waitForNativeAds = () => {
+      document.querySelectorAll('[data-adsterra-slot]').forEach((slot) => {
+        if (!(slot instanceof HTMLElement) || slot.dataset.adsterraChecked === '1') return;
+        slot.dataset.adsterraChecked = '1';
+
+        const hasCreative = () => {
+          const container = slot.querySelector('[data-adsterra-native]');
+          if (!(container instanceof HTMLElement)) return false;
+          return Boolean(container.querySelector('iframe, img, a, video')) || container.clientHeight > 8;
+        };
+
+        const observer = new MutationObserver(() => {
+          if (hasCreative()) observer.disconnect();
+        });
+        observer.observe(slot, { childList: true, subtree: true });
+
+        window.setTimeout(() => {
+          if (!hasCreative()) slot.hidden = true;
+          observer.disconnect();
+        }, 8000);
+      });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForNativeAds, { once: true });
+      } else {
+        waitForNativeAds();
+      }
+    })();
+  </script>
 )}
